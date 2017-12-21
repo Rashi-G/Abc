@@ -16,21 +16,59 @@ import javax.swing.JOptionPane;
  *
  * @author Rashi
  */
-
 public class Game extends javax.swing.JFrame {
-float current_speed;
+
+    float current_speed;
+
+    String users_word;
+    int flag = 0;
+    int start_time;
+    int end_time;
+    String para = null;
+    int space = 0, error_count = 0;
+    int count = 0, totalWords;
+    StringTokenizer words;
+    String correct_word = "";
+
     /**
      * Creates new form NewJFrame
      */
-    
     public Game() {
-       initComponents();
-       showPara();
-       jTextPane1.setEditable(false);
-       tf.requestFocus(true);
-       r=new StringTokenizer(para);
-       t=r.countTokens();
-       start_time=(int) System.currentTimeMillis();
+        initComponents();
+        showPara();
+        paraTextPane.setEditable(false);
+        currentInputTF.requestFocus(true);
+        words = new StringTokenizer(para);
+        totalWords = words.countTokens();
+        start_time = (int) System.currentTimeMillis();
+    }
+
+    private void showPara() {
+        String thisLine = null;
+        int a;
+        a = (int) (Math.random() * 10);
+        System.out.println("a is " + a);
+        try {
+            // open input stream Para.txt for fetching require pragraphs.
+            // Here paragraphs are stored as single lines.
+            BufferedReader buffRdr = new BufferedReader(new FileReader(
+                    "Para.txt"));
+            while ((thisLine = buffRdr.readLine()) != null) {
+                char ch = thisLine.charAt(0);
+                thisLine = thisLine.substring(1);
+
+                int ch1 = (ch - '0');
+                if (ch1 == a) {
+                    para = "";
+                    para = para + thisLine;
+                    System.out.println(para);
+                    paraTextPane.setText(para);
+                    return;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -42,33 +80,28 @@ float current_speed;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        tf = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        finishButton = new javax.swing.JButton();
+        currentInputTF = new javax.swing.JTextField();
+        paraDisplayer = new javax.swing.JScrollPane();
+        paraTextPane = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Finish");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        finishButton.setText("Finish");
+        finishButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                finishButtonActionPerformed(evt);
             }
         });
 
-        tf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfActionPerformed(evt);
-            }
-        });
-        tf.addKeyListener(new java.awt.event.KeyAdapter() {
+        currentInputTF.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                tfKeyTyped(evt);
+                currentInputTFKeyTyped(evt);
             }
         });
 
-        jTextPane1.setEditable(false);
-        jScrollPane2.setViewportView(jTextPane1);
+        paraTextPane.setEditable(false);
+        paraDisplayer.setViewportView(paraTextPane);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -78,176 +111,96 @@ float current_speed;
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(tf, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE))
+                        .addComponent(currentInputTF, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(153, 153, 153)
-                        .addComponent(jButton1))
+                        .addComponent(finishButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(42, 42, 42)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)))
+                        .addComponent(paraDisplayer, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(paraDisplayer, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(tf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(currentInputTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(finishButton)
                 .addGap(72, 72, 72))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void finishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishButtonActionPerformed
         JOptionPane.showMessageDialog(rootPane, "You exit without completing game!!!");
         this.setVisible(false);
-        start obj =new start();
+        GameStarter obj = new GameStarter();
         obj.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
-    String users_word;
-    int flag=0;
-    int start_time;
-    int end_time;
-    String para=null;
-    int space=0,error_count=0;
-    int count=0,t;
-    StringTokenizer r;
-    String correct_word ="";
-    private void showPara()
-    {   
-         String  thisLine = null;
-         int a;
-         a=(int)(Math.random()*10);
-         System.out.println("a is "+a);
-         try{
-         // open input stream Para.txt for fetching require pragraphs.Here paragraphs are stored as single lines.
-         BufferedReader buffRdr = new BufferedReader(new FileReader(
-				"Para.txt"));
-         while ((thisLine = buffRdr.readLine()) != null)
-         {
-         char ch = thisLine.charAt(0);
-         thisLine = thisLine.substring(1);
-                 
-         int ch1=(ch-'0');
-         if(ch1==a)
-         {  
-             para="";
-             para=para+thisLine;
-             System.out.println(para);
-             jTextPane1.setText(para);
-             return;
-         }
-         }     
-      }catch(Exception e){
-         e.printStackTrace();
-      }
-    }
-     
-    private void tfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfActionPerformed
-      r=new StringTokenizer(para);
-      t=r.countTokens();
-      start_time=(int) System.currentTimeMillis();
-    }//GEN-LAST:event_tfActionPerformed
+    }//GEN-LAST:event_finishButtonActionPerformed
 
-    private void tfKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfKeyTyped
-  
+    private void currentInputTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_currentInputTFKeyTyped
+
         char ch = evt.getKeyChar();
         System.out.print(ch);
-               if(ch == KeyEvent.VK_SPACE)      //Matches wor whenever you press space
-                {
-                    space++;
-                    float itime=(int)System.currentTimeMillis();
-                    current_speed=space/((float)(itime-start_time)/1000f);
-                    System.out.printf("Curent_speed is: %.2f",current_speed);
-                    users_word=tf.getText();
-                    users_word=users_word.trim();
-                  if(flag==0)
-                  {
-                      correct_word=r.nextToken();
-                      flag=1;
-                  }
-                  if(users_word.equals(correct_word))
-                  {
-                      tf.setBackground(Color.WHITE);
-                      System.out.println("word matched");
-                      count++;
-                      if(r.hasMoreTokens())
-                          correct_word=r.nextToken();
-                      else{                                         //The game is over.
-                          end_time=(int)System.currentTimeMillis();
-                          System.out.println("you are done");
-                          float time=(end_time-start_time)/1000f;
-                          System.out.println("time is"+time+" "+space+" "+error_count);
-                          float speed=(float)space/time;
-                          Math.ceil(speed);
-                          System.out.println("speed in words per second: "+speed);
-                          float accuracy=(float)((float)(space-error_count)/(float)space)*100;
-                          accuracy=(float) Math.ceil(accuracy);
-                          System.out.println("accuracy is"+accuracy);
-                          JOptionPane.showMessageDialog(null, "your accuracy is:"+accuracy+"   "+"\nyour typing speed is:"+speed);    
-                          this.setVisible(false);
-                          start obj=new start();
-                          obj.setVisible(true);
-                      }}
-                    
-                  else
-                  {
-                      error_count++;
-                      tf.setBackground(Color.red);
-                  JOptionPane.showMessageDialog(rootPane, "Typing error");
-                  }
-                
-                users_word="";
-                tf.setText("");
+        if (ch == KeyEvent.VK_SPACE) //Matches wor whenever you press space
+        {
+            space++;
+            float itime = (int) System.currentTimeMillis();
+            current_speed = space / ((float) (itime - start_time) / 1000f);
+            System.out.printf("Curent_speed is: %.2f", current_speed);
+            users_word = currentInputTF.getText();
+            users_word = users_word.trim();
+            if (flag == 0) {
+                correct_word = words.nextToken();
+                flag = 1;
+            }
+            if (users_word.equals(correct_word)) {
+                currentInputTF.setBackground(Color.WHITE);
+                System.out.println("word matched");
+                count++;
+                if (words.hasMoreTokens()) {
+                    correct_word = words.nextToken();
+                } else {                                         //The game is over.
+                    end_time = (int) System.currentTimeMillis();
+                    System.out.println("you are done");
+                    float time = (end_time - start_time) / 1000f;
+                    System.out.println("time is" + time + " " + space + " " + error_count);
+                    float speed = (float) space / time;
+                    Math.ceil(speed);
+                    System.out.println("speed in words per second: " + speed);
+                    float accuracy = (float) ((float) (space - error_count) / (float) space) * 100;
+                    accuracy = (float) Math.ceil(accuracy);
+                    System.out.println("accuracy is" + accuracy);
+                    JOptionPane.showMessageDialog(null, "your accuracy is:" + accuracy + "   " + "\nyour typing speed is:" + speed);
+                    this.setVisible(false);
+                    GameStarter obj = new GameStarter();
+                    obj.setVisible(true);
                 }
-                  
-       
-    }//GEN-LAST:event_tfKeyTyped
+            } else {
+                error_count++;
+                currentInputTF.setBackground(Color.red);
+                JOptionPane.showMessageDialog(rootPane, "Typing error");
+            }
+
+            users_word = "";
+            currentInputTF.setText("");
+        }
+
+
+    }//GEN-LAST:event_currentInputTFKeyTyped
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Game().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextPane jTextPane1;
-    public javax.swing.JTextField tf;
+    public javax.swing.JTextField currentInputTF;
+    private javax.swing.JButton finishButton;
+    private javax.swing.JScrollPane paraDisplayer;
+    private javax.swing.JTextPane paraTextPane;
     // End of variables declaration//GEN-END:variables
 }
